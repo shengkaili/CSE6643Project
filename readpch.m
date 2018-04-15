@@ -13,7 +13,7 @@ while ~isnumeric(tline)
         % get row we are working on
         x = str2double(strrep(tline(33:40),' ', ''));
         y = str2double(strrep(tline(49:56),' ', ''));
-        row = (x*n-1)+(y-1);
+        col = (x*n-1)+(y-1);
         % skip
     elseif strcmp(tline(1:4), 'DMIG')
         % initialize appropriate matrix on header
@@ -24,7 +24,7 @@ while ~isnumeric(tline)
         elseif strcmp(flag, 'PAX ')
             F = zeros(m,1);
         elseif strcmp(flag, 'VAX ')
-            % do something here
+            V = zeros(m,1);
         else
             keyboard
         end
@@ -32,15 +32,15 @@ while ~isnumeric(tline)
         % get column and value of we are working on
         x = str2double(strrep(tline(17:24),' ', ''));
         y = str2double(strrep(tline(33:40),' ', ''));
-        col = (x*n-1)+(y-1);
+        row = (x*n-1)+(y-1);
         value = str2double(strrep(strrep(tline(41:56),' ', ''),'D','E'));
         % assign to the appropriate matrix
         if strcmp(flag, 'KAAX')
-            K(row,col) = value;
+            K(col,row) = value;
         elseif strcmp(flag, 'PAX ')
-            % do something here
+            F(row,1) = value;
         elseif strcmp(flag, 'VAX ')
-            % do something here
+            V(row,1) = value;
         else
             keyboard
         end
@@ -52,6 +52,12 @@ while ~isnumeric(tline)
     tline = fgets(fid);
     
 end
+
+% remove entries that are not being used
+rmv = ~V;
+K(rmv,:) = [];
+K(:,rmv) = [];
+F(rmv,:) = [];
 
 % reflect K matrix 
 K = K + tril(K,-1)';
