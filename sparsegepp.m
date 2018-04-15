@@ -61,13 +61,13 @@ for i = 1:n
             
             % find index we are updating
             indx = find(A(:,1)==row & A(:,2)==k);
-            if isempty(indx)
+            indx2 = find(A(:,1)==col & A(:,2)==k);
+            
+            if isempty(indx) && ~isempty(indx2)
                 % create sparse A entry
                 A(end+1,:) = [row, k, 0];
                 indx = size(A,1);
             end
-            indx2 = find(A(:,1)==col & A(:,2)==k);
-            
             if ~isempty(indx2)
                 A(indx,3) = A(indx,3) + M(subsetloc(j),3)*A(indx2,3);
             end
@@ -79,7 +79,8 @@ for i = 1:n
         
         if ~isempty(indx4)
             if isempty(indx3)
-               keyboard 
+               b(end+1,:) = [row, 1, 0];
+               indx = row;
             end
             b(indx3,3) = b(indx3,3) + M(subsetloc(j),3)*b(indx4,3);
         end
