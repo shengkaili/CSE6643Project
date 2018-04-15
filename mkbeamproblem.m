@@ -1,4 +1,8 @@
 function [K,F,ymax,id] = mkbeamproblem(n)
+% MKBEAMPROBLEM(nodes), input the number of nodes you want the FEM to have.
+% This will output the stiffness matrix K, force vector F, analytical end
+% position of the beam ymax and location in solution vector x (K\F) that
+% should be compared to the analytical solution. 
 
 % defining variables..
 s = 0.125; % 1 square inch section
