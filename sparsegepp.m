@@ -77,13 +77,20 @@ for i = 1:n
         indx3 = find(b(:,1)==row);
         indx4 = find(b(:,1)==col);
         
+        if isempty(indx3) && ~isempty(indx4)
+            b(end+1,:) = [row, 1, 0];
+            indx3 = size(b,1);
+        end
         if ~isempty(indx4)
-            if isempty(indx3)
-               b(end+1,:) = [row, 1, 0];
-               indx = row;
-            end
             b(indx3,3) = b(indx3,3) + M(subsetloc(j),3)*b(indx4,3);
         end
+        
+%         if ~isempty(indx4)
+%             if isempty(indx3)
+%                
+%             end
+%             
+%         end
         
     end
     try
