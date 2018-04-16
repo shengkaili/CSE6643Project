@@ -16,7 +16,6 @@ M(:,3) = NaN;
 % loop through each column
 for i = 1:n
    
-   
     % loop back to create a new subset if we pivoted
      redo = true;
     while redo
@@ -53,8 +52,8 @@ for i = 1:n
     for j = 2:size(subset,1)
         M(subsetloc(j),3) = -subset(j,3)/subset(1,3);
         
-        row = M(subsetloc(j),1);
-        col = M(subsetloc(j),2);
+        row = subset(j,1);
+        col = subset(j,2);
         
         % update A with M
         for k = i:n
@@ -84,15 +83,11 @@ for i = 1:n
         if ~isempty(indx4)
             b(indx3,3) = b(indx3,3) + M(subsetloc(j),3)*b(indx4,3);
         end
-        
-%         if ~isempty(indx4)
-%             if isempty(indx3)
-%                
-%             end
-%             
-%         end
+
         
     end
+    
+    
     try
     M(subsetloc(1),3) = 1;
     catch
