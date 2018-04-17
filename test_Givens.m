@@ -9,7 +9,6 @@ disp('Applying Givens_full method ...')
 tic;[xf,Af] = Givens_full(K,F,3);tf = toc
 norm(xMatlab-xf) % check the difference Givens_full and in-built solver
 errG_f = ymax - xf(id);
-errG_f2 = ymax - xf2(id);
 K_COO = full2sparse(K,'COO');
 F_COO = full2sparse(F,'COO');
 disp('Applying Givens_COO method ...')
