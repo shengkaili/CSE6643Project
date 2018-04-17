@@ -1,5 +1,5 @@
 
-nodes = [15,100];
+nodes = [3,100,200];
 error = zeros(length(nodes),1);
 condition = error;
 
@@ -18,13 +18,19 @@ for i = 1:length(nodes)
     sF = full2sparse(F,'COO');
     
     % LU decomposition via guassian elimination
-    [A,b] = sparsegepp(sK,sF);
+    
+    
+    x = sparsegepp2(K,F,0);
+    errorspr(i) = abs(ymax - x(id))/ymax;
+    
+    x = gaussianelimination(K,F);
+    errornrm(i) = abs(ymax - x(id))/ymax;
     
 %     % solve sparse matrix by cheating, write backward subsitution
 %     x = sparse2full(A,'COO')\sparse2full(b,'COO');
-%     %     x = sparsebackwardsub(A,b);
+    %     x = sparsebackwardsub(A,b);
 %     
-%     error(i) = abs(ymax - x(id))/ymax;
+    
     
     
     
@@ -33,3 +39,5 @@ for i = 1:length(nodes)
     
     
 end
+
+keyboard
