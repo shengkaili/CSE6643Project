@@ -1,7 +1,7 @@
 clc;clear;
 
 
-elements = 1:20;
+elements = 1:20:500
 error = zeros(length(elements),1);
 condition = error;
 for i = 1:length(elements)
@@ -29,22 +29,50 @@ for i = 1:length(elements)
     
     % cholesky
     x = sparseCholeskyFCT(K,F);
-    err_cholesky_s = ymax-x(id);
+    err_cholesky_s(i) = ymax-x(id);
+    
+    err_cholesky_f(i) = 0;
+    
+    x = K\F;
+    err_matlab_f(i) = ymax - x(id);
+    x = sparse(K)\sparse(F);
+    err_matlab_s(i) = ymax - x(id);
 
     % get condition number for this stiffness matrix
     condition(i) = cond(K,'fro'); 
     
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
+   
 end
 
-keyboard
+
+figure(1);clf;hold on;
+title('error (sparse) vs number of elements');
+plot(elements,abs(err_ge_s),'o-');
+plot(elements,abs(err_givens_s),'o-');
+plot(elements,abs(err_cholesky_s),'o-');
+plot(elements,abs(err_matlab_s),'o-');
+L=legend('gaussian elimination', 'givens', 'cholesky', 'built in matlab');
+L.Location = 'northwest';
+
+figure(2);clf;hold on;
+title('error (full) vs number of elements');
+plot(elements,abs(err_ge_f),'o-');
+plot(elements,abs(err_givens_f),'o-');
+plot(elements,abs(err_cholesky_f),'o-');
+plot(elements,abs(err_matlab_f),'o-');
+L=legend('gaussian elimination', 'givens', 'cholesky', 'built in matlab');
+L.Location = 'northwest';
+
+figure(3);clf;hold on;
+title('error (sparse) vs condition number');
+plot(condition,abs(err_ge_s),'o-');
+plot(condition,abs(err_givens_s),'o-');
+plot(condition,abs(err_cholesky_s),'o-');
+plot(condition,abs(err_matlab_s),'o-');
+L=legend('gaussian elimination', 'givens', 'cholesky', 'built in matlab');
+L.Location = 'northwest';
+
+figure(4);clf;
+title('condition number of matrix vs number of elements');
+plot(condition,elements);
+
