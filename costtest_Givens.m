@@ -2,31 +2,27 @@ clear all;
 nodeArray=10:10:300;
 tM = nan(length(nodeArray),1);
 tGf = nan(length(nodeArray),1);
-tGC = nan(length(nodeArray),1);
+tGf_bw = nan(length(nodeArray),1);
 errM = nan(length(nodeArray),1);
 errG_full = nan(length(nodeArray),1);
-errG_COO = nan(length(nodeArray),1);
+errG_full_bw = nan(length(nodeArray),1);
 for i=1:length(nodeArray)
     nodes=nodeArray(i);
     [K,F,ymax,id] = mkbeamproblem(nodes);
-%     condK(i)=cond(K,2);
     tic;alldisp = K\F;tM(i) = toc;
     errM(i) = ymax-alldisp(id);
     if i == 1
         t0 = tM(i);
     end
-    tic;[xf,Af] = Givens_full(K,F,3);tGf(i) = toc;
+    tic;[xf,Af] = Givens_full(K,F,0);tGf(i) = toc;
     errG_full(i) = ymax-xf(id);
-    K_COO = full2sparse(K,'COO');
-    F_COO = full2sparse(F,'COO');
-    tic;[x_COO,A_COO] = Givens_COO(K_COO,F_COO);tGC(i) = toc;
-    xC = sparse2full(x_COO,'COO');
-    errG_COO(i) = ymax-xC(id);
-    
-    
-%     KS=sparse(K); FS=sparse(F);
-%     alldisp = KS\FS;
-%     errS = ymax - alldisp(id);
+%     K_COO = full2sparse(K,'COO');
+%     F_COO = full2sparse(F,'COO');
+%     tic;[x_COO,A_COO] = Givens_COO(K_COO,F_COO);tGC(i) = toc;
+%     xC = sparse2full(x_COO,'COO');
+%     errG_COO(i) = ymax-xC(id);
+    tic;[xf_bw,Af_bw] = Givens_full(K,F,3);tGf_bw(i) = toc;
+    errG_full_bw(i) = ymax-xf_bw(id);
 end
 FS = 18;
 figure(1)
@@ -38,36 +34,42 @@ hold off
 xlabel('nodes'); ylabel('|err|');
 legend('Matlab in-built','Givens','location','NorthWest');
 grid on
+xlim([min(nodeArray) max(nodeArray)])
 set(gca,'FontSize',FS)
 
 subplot(2,2,2)
-plot(log(nodeArray),log(abs(errM)),'o-');
+loglog(nodeArray,abs(errM),'o-');
 hold on
-plot(log(nodeArray),log(abs(errG_full)),'o-');
+loglog(nodeArray,abs(errG_full),'o-');
 hold off
-xlabel('log(nodes)'); ylabel('log(|err|)');
+xlabel('nodes'); ylabel('|err|');
 legend('Matlab in-built','Givens','location','NorthWest');
 grid on
+xlim([min(nodeArray) max(nodeArray)])
 set(gca,'FontSize',FS)
 
 subplot(2,2,3)
 plot(nodeArray,tM/t0,'o-');
 hold on
 plot(nodeArray,tGf/t0,'o-');
-plot(nodeArray,tGC/t0,'o-');
+% plot(nodeArray,tGC/t0,'o-');
+plot(nodeArray,tGf_bw/t0,'o-');
 hold off
 xlabel('nodes'); ylabel('relative time cost');
-legend('Matlab in-built','Givens for full matrix','Givens for COO matrix','location','NorthWest');
+legend('Matlab in-built','Givens (no bandwith information)','Givens (known bandwith)','location','NorthWest');
 grid on
+xlim([min(nodeArray) max(nodeArray)])
 set(gca,'FontSize',FS)
 
 subplot(2,2,4)
-plot(nodeArray,log(tM/t0),'o-');
+loglog(nodeArray,tM/t0,'o-');
 hold on
-plot(nodeArray,log(tGf/t0),'o-');
-plot(nodeArray,log(tGC/t0),'o-');
+loglog(nodeArray,tGf/t0,'o-');
+% plot(nodeArray,log(tGC/t0),'o-');
+loglog(nodeArray,tGf_bw/t0,'o-');
 hold off
-xlabel('log(nodes)'); ylabel('log(relative time cost)');
-legend('Matlab in-built','Givens for full matrix','Givens for COO matrix','location','NorthWest');
+xlabel('nodes'); ylabel('relative time cost');
+legend('Matlab in-built','Givens (no bandwith information)','Givens (known bandwith)','location','NorthWest');
 grid on
+xlim([min(nodeArray) max(nodeArray)])
 set(gca,'FontSize',FS)
