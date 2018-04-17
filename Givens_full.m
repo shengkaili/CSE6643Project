@@ -20,8 +20,8 @@ function [x,A] = Givens_full(A,b,bw)
                 while (k >= j && A(k,j) == 0)
                     k = k-1;
                 end
-                [c,s] = givens(A(k,j),A(i,j));
-                A([k,i],(A(k,:)~=0 |A(i,:)~=0)) = [c,s;-s,c]'*A([k,i],(A(k,:)~=0 |A(i,:)~=0));
+                [c,s] = givens(A(k,j),A(i,j));% 6 flops
+                A([k,i],(A(k,:)~=0 |A(i,:)~=0)) = [c,s;-s,c]'*A([k,i],(A(k,:)~=0 |A(i,:)~=0));%
                 b([k,i]) = [c,s;-s,c]'*b([k,i]);
                 i = k;
             else
@@ -39,9 +39,9 @@ function [x,A] = Givens_full(A,b,bw)
                 while (k >= j && A(k,j) == 0)
                     k = k-1;
                 end
-                [c,s] = givens(A(k,j),A(i,j));
-                A([k,i],j:min(n,mm+bw)) = [c,s;-s,c]'*A([k,i],j:min(n,mm+bw));
-                b([k,i]) = [c,s;-s,c]'*b([k,i]);
+                [c,s] = givens(A(k,j),A(i,j));% 6 flops
+                A([k,i],j:min(n,mm+bw)) = [c,s;-s,c]'*A([k,i],j:min(n,mm+bw));% 6(min(n,mm+bw)-j+1)
+                b([k,i]) = [c,s;-s,c]'*b([k,i]);% 6 flops
                 i = k;
             else
                 i = i-1;
