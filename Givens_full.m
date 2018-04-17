@@ -40,7 +40,7 @@ function [x,A] = Givens_full(A,b,bw)
                     k = k-1;
                 end
                 [c,s] = givens(A(k,j),A(i,j));% 6 flops
-                A([k,i],j:min(n,mm+bw)) = [c,s;-s,c]'*A([k,i],j:min(n,mm+bw));% 6(min(n,mm+bw)-j+1)
+                A([k,i],j:min(n,mm+bw)) = [c,s;-s,c]'*A([k,i],j:min(n,mm+bw));% 6*(min(2bw+1,m-i)) flops
                 b([k,i]) = [c,s;-s,c]'*b([k,i]);% 6 flops
                 i = k;
             else
