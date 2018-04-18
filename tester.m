@@ -94,11 +94,12 @@ set(gca, 'YScale', 'log')
 
 figure(3);clf;hold on;
 title('error (sparse) vs condition number');
-plot(condition2,abs(err_ge_s),'o-');
-plot(condition2,abs(err_givens_s),'o-');
-plot(condition2,abs(err_cholesky_s),'o-');
-plot(condition2,abs(err_matlab_s),'o-');
-L=legend('gaussian elimination', 'givens', 'cholesky', 'built in matlab');
+plot(condition,abs(err_ge_s),'o-');
+plot(condition,abs(err_givens_s),'o-');
+plot(condition,abs(err_cholesky_s),'o-');
+plot(condition,abs(err_matlab_s),'o-');
+plot([1e4 1e10],1e-17*[1e4 1e10],'k')
+L=legend('gaussian elimination', 'givens', 'cholesky', 'built in matlab','error = O(condtion number)');
 L.Location = 'northwest';
 ylabel('error');
 xlabel('condition number');
