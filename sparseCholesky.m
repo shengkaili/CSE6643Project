@@ -39,6 +39,11 @@ end
 % O(7n) flops
 % total: O(44n) flops
 
+% visualize the beam
+figure,plot((1:2:length(x))/length(x),x(1:2:end),'linewidth',2);
+axis equal;
+xlabel('x'); ylabel('y'); title('Beam deformation');
+
 errS = ymax - x(id);
 xMatlab=K\F;
 err = ymax - xMatlab(id);
