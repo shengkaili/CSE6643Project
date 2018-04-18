@@ -1,7 +1,7 @@
 clc;clear;
 
 
-elements = 10:10:300;
+elements = 2:10:300;
 error = zeros(length(elements),1);
 condition = error;
 for i = 1:length(elements)
@@ -127,13 +127,13 @@ L.Location = 'northwest';
 set(gca, 'XScale', 'log')
 set(gca, 'YScale', 'log')
 
-% h
-figure(6);clf; hold on;
-plot(err_ge_s,fnorm./xnorm_ge_s./sigma1);
-plot(err_matlab_s,fnorm./xnorm_matlab_s./sigma1);
-plot(err_givens_s',fnorm./xnorm_givens_s'./sigma1);
-plot(err_cholesky_s,fnorm./xnorm_cholesky_s'./sigma1);
-set(gca, 'YScale', 'log')
-set(gca, 'XScale', 'log')
-legend('condition number', 'plesha condition number');
+% % h
+% figure(6);clf; hold on;
+% plot(err_ge_s,fnorm./xnorm_ge_s./sigma1);
+% plot(err_matlab_s,fnorm./xnorm_matlab_s./sigma1);
+% plot(err_givens_s',fnorm./xnorm_givens_s'./sigma1);
+% plot(err_cholesky_s,fnorm./xnorm_cholesky_s'./sigma1);
+% set(gca, 'YScale', 'log')
+% set(gca, 'XScale', 'log')
+% legend('condition number', 'plesha condition number');
 
