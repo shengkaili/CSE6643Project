@@ -1,7 +1,7 @@
 clc;clear;
 
 
-elements = 1:10:300;
+elements = 10:10:300;
 error = zeros(length(elements),1);
 condition = error;
 for i = 1:length(elements)
@@ -9,7 +9,7 @@ for i = 1:length(elements)
     % get number of nodes
     n = elements(i);
     % get sample problem
-    [K,F,ymax,id] = mkbeamproblem(n,1);
+    [K,F,ymax,id] = mkbeamproblem(n);
     % convert K, F into COO sparse format
     sK = full2sparse(K,'COO');
     sF = full2sparse(F,'COO');    
