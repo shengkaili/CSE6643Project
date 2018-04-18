@@ -13,3 +13,4 @@ function [c,s] = givens(x1,x2)
         s = c*t;
     end
 end
+% 5 flops and one square root
